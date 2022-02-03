@@ -1,13 +1,63 @@
-<div class="container" *ngIf="filtered">
-  <div class="row">
-    <div *ngFor="let game of filtered"
-         class="col d-flex flex-column justify-content-between">
-      <img src="{{ game.image }}" width="270px" alt="">
-      <div>{{ game.categories?.join(',') }}</div>
-      <!--            <img src="http://stage.whgstage.com/scontent/images/games/NEJACKANDTHEBEANSTALK.jpg" width="270px" alt="">-->
-      <!--            <img src="http://stage.whgstage.com/scontent/images/games/NEJACKANDTHEBEANSTALK.jpg" width="270px" alt="">-->
-      <!--            <img src="http://stage.whgstage.com/scontent/images/games/NEJACKANDTHEBEANSTALK.jpg" width="270px" alt="">-->
-      <!--            <img src="http://stage.whgstage.com/scontent/images/games/NEJACKANDTHEBEANSTALK.jpg" width="270px" alt="">-->
+<div *ngIf="games && selectedGameCategory"
+     class="page"
+>
+    <div class="row">
+        <div *ngFor="let game of games"
+             class="col"
+             style="padding: 0; max-width: 298px;"
+        >
+            <div class="justify-content-center game-container">
+                <div *ngIf="game.jackpot"
+                     class="jackpot"
+                >
+                    <span>
+                        {{ game.jackpot | currency: 'GBP' }}
+                    </span>
+                </div>
+
+                <!-- only if route is new -->
+                <div *ngIf="selectedGameCategory === 'new' && game.categories.includes('new')"
+                     class="ribbon"
+                >
+                    <span>new</span>
+                </div>
+                <!-- only if route is top -->
+                <div *ngIf="selectedGameCategory === 'top' && game.categories.includes('top')"
+                     class="ribbon"
+                >
+                    <span>top</span>
+                </div>
+
+                <!-- only if route is different than top & new -->
+                <div *ngIf="isNotNewOrTopCategory && selectedGameCategory !== 'new' || selectedGameCategory !== 'top'">
+                    <div *ngIf="isNotNewOrTopCategory && game.categories.includes('new') && game.categories.includes('top')"
+                         class="ribbon"
+                    >
+                        <span style="font-size: 11px">NEW & TOP</span>
+                    </div>
+
+                    <div *ngIf="isNotNewOrTopCategory && game.categories.includes('top') && !game.categories.includes('new')"
+                         class="ribbon"
+                    >
+                        <span>top</span>
+                    </div>
+
+                    <div *ngIf="isNotNewOrTopCategory && game.categories.includes('new') && !game.categories.includes('top')"
+                         class="ribbon"
+                    >
+                        <span>new</span>
+                    </div>
+                </div>
+
+                <div class="game-name">
+                    <span>{{ game.name }}</span>
+                </div>
+                <div class="play-icon">
+                    <i class="fa-5x far fa-play-circle"></i>
+                </div>
+                <img [src]="game.image" alt="">
+            </div>
+        </div>
     </div>
-  </div>
 </div>
+

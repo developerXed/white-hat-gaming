@@ -1,0 +1,30 @@
+@media only screen and (max-width: 873px) {
+    a {
+        font-size: 13px !important;
+    }
+}
+
+@media only screen and (max-width: 1168px) {
+    a {
+        font-size: 19px;
+    }
+}
+
+.active {
+    background: limegreen;
+}
+
+.navbar-custom {
+    background-color: #373737;
+    font-size: 28px;
+}
+
+.navbar {
+    padding: 0;
+
+    a {
+        line-height: 50px;
+        color: white;
+        letter-spacing: 1px;
+    }
+}
