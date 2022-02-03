@@ -4,6 +4,7 @@ import { Ijackpots } from "../models/igames";
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, switchMap } from "rxjs";
 import {Subscription, timer} from 'rxjs';
+import { Title } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-game',
@@ -21,12 +22,26 @@ export class GameComponent implements OnInit {
   constructor(
     private dashBoardService: DashboardService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private titleService: Title,
   ) {}
 
   ngOnInit(): void {
     // remove '/' from url path
     let urlPath = this.router.url.replace('\/','');
+
+    // remove any special chars from url name
+    let title = urlPath.replace(/[^\w\s]/gi, " ");
+    const separatorWords = title.split(' ');
+
+    // make space of every word and capitalize it
+    title = separatorWords.map((title) => {
+      return title[0].toUpperCase() + title.substring(1);
+    }).join(" ");
+
+    // set dynamic title of the page
+    this.titleService.setTitle(title);
+
     // remove everything after first '-' to filter by Category below
     // i.e. top, new instead top-games, new-games
     this.selectedGameCategory = urlPath.split('-')[0];
