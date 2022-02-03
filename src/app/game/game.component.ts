@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DashboardService} from "../services/dashboard.service";
 import { Ijackpots } from "../models/igames";
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, switchMap } from "rxjs";
+import { map, Subject, switchMap, takeUntil, takeWhile } from "rxjs";
 import {Subscription, timer} from 'rxjs';
 import { Title } from "@angular/platform-browser";
 
@@ -17,7 +17,7 @@ export class GameComponent implements OnInit {
   otherCategories: string[] = ['fun', 'virtual', 'classic', 'ball'];
   jackpots: Ijackpots[] = [];
   isNotNewOrTopCategory: boolean = false;
-  timeSubscription: Subscription;
+  isDestroyed: Subject<void> = new Subject<void>();
 
   constructor(
     private dashBoardService: DashboardService,
@@ -53,12 +53,15 @@ export class GameComponent implements OnInit {
       this.getSelectedCategoryGame();
     }
 
-    //Update Data from Api call every 5 seconds
-    this.timeSubscription = timer(0, 5000).pipe(
-        map(() => {
-          this.getSelectedCategoryGame(); // load data contains the http request
-        })
-    ).subscribe();
+    // Update Data from Api call every 5 seconds
+    timer(0, 5000)
+        .pipe(
+            takeUntil(this.isDestroyed),
+            map(() => {
+              // load data contains the http request
+              this.getSelectedCategoryGame();
+            })
+        ).subscribe();
   }
 
   getSelectedCategoryGame() {
@@ -100,6 +103,7 @@ export class GameComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.timeSubscription.unsubscribe();
+    this.isDestroyed.next();
+    this.isDestroyed.complete();
   }
 }
