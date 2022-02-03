@@ -1,0 +1,13 @@
+<div class="container" *ngIf="filtered">
+  <div class="row">
+    <div *ngFor="let game of filtered"
+         class="col d-flex flex-column justify-content-between">
+      <img src="{{ game.image }}" width="270px" alt="">
+      <div>{{ game.categories?.join(',') }}</div>
+      <!--            <img src="http://stage.whgstage.com/scontent/images/games/NEJACKANDTHEBEANSTALK.jpg" width="270px" alt="">-->
+      <!--            <img src="http://stage.whgstage.com/scontent/images/games/NEJACKANDTHEBEANSTALK.jpg" width="270px" alt="">-->
+      <!--            <img src="http://stage.whgstage.com/scontent/images/games/NEJACKANDTHEBEANSTALK.jpg" width="270px" alt="">-->
+      <!--            <img src="http://stage.whgstage.com/scontent/images/games/NEJACKANDTHEBEANSTALK.jpg" width="270px" alt="">-->
+    </div>
+  </div>
+</div>
